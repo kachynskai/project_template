@@ -1,4 +1,5 @@
 import pandas as pd
+from pandas.errors import EmptyDataError
 
 
 def input_data_from_console():
@@ -40,13 +41,17 @@ def input_data_with_pandas(path_to_file):
                path_to_file (str): path of the file to read.
 
            Returns:
-               input_data (str): this function return a value input from the console.
+               input_data (DataFrame): this function return a value input from the console.
 
            Raises:
                FileNotFoundError: if file by path in the args of the function is not found.
+               pd.errors.EmptyDataError: if file by path in the args of the function is empty.
            """
     try:
+
         input_data = pd.read_csv(path_to_file)
+        if input_data.empty:
+            raise EmptyDataError("File is empty")
     except FileNotFoundError:
         return f"File {path_to_file} not found"
     return input_data
